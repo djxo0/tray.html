@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Password Generator</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-image: url('https://s01.babup.com/uploads/Picsart-24-05-13-18-37-17-699.jpg'); /* اسم الصورة التي تريدها كخلفية */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    max-width: 400px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    text-align: center;
+  }
+
+  h1 {
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  .input-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+  }
+
+  input[type="number"],
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #f9c22e;
+    border-radius: 25px;
+    background-color: #f9c22e;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s, border-color 0.3s;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+
+  button:hover {
+    background-color: #e67e22;
+    box-shadow: 0 0 20px #f9c22e;
+    border-color: #e67e22;
+  }
+
+  p {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 2px solid #f9c22e;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+</style>
+</head>
+<body onload="displayPasswordsOnLoad()">
+<div class="container">
+  <h1 id="title">Start creating passwords  </h1>
+
+  <div class="input-group">
+    <input type="number" id="length" value="10" min="4" max="20">
+    <label for="length" id="lengthLabel">طول كلمة المرور</label>
+  </div>
+
+  <div class="input-group">
+    <input type="checkbox" id="uppercase" checked>
+    <label for="uppercase" id="uppercaseLabel">حروف كبيرة</label>
+  </div>
+
+  <div class="input-group">
+    <input type="checkbox" id="lowercase" checked>
+    <label for="lowercase" id="lowercaseLabel">حروف صغيرة</label>
+  </div>
+
+  <div class="input-group">
+    <input type="checkbox" id="numbers" checked>
+    <label for="numbers" id="numbersLabel">أرقام</label>
+  </div>
+
+  <div class="input-group">
+    <input type="checkbox" id="symbols" checked>
+    <label for="symbols" id="symbolsLabel">رموز</label>
+  </div>
+
+  <button onclick="generatePassword()" id="generateBtn">توليد كلمة المرور</button>
+
+  <p id="passwordLabel"></p>
+
+  <select id="passwordDropdown" onchange="selectPassword()">
+    <option value="">Record passwords</option>
+  </select>
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة تحديد اللغة</title>
+    <style>
+        .select-wrapper {
+            position: relative;
+            width: fit-content;
+            margin: auto;
+            text-align: center;
+        }
+
+        .select-wrapper select {
+            text-align: center;
+            padding: 5px 10px;
+            width: 200px; /* تعديل العرض حسب الحاجة */
+        }
+    </style>
+</head>
+<body>
+
+<div class="select-wrapper">
+    <select onchange="window.location.href=this.value">
+        <option value="#" selected disabled>Change  language</option>
+        <option value="go:en">English</option>
+        <option value="go:ar">العربية</option>
+    </select>
+</div>
+
+</body>
+</html>
+
+
+
+</div>
+
+<script>
+  var generatedPasswords = [];
+
+  function generatePassword() {
+    var length = document.getElementById("length").value;
+    var uppercase = document.getElementById("uppercase").checked;
+    var lowercase = document.getElementById("lowercase").checked;
+    var numbers = document.getElementById("numbers").checked;
+    var symbols = document.getElementById("symbols").checked;
+
+    var charset = "";
+    if (uppercase) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (lowercase) charset += "abcdefghijklmnopqrstuvwxyz";
+    if (numbers) charset += "0123456789";
+    if (symbols) charset += "!@#$%^&*()_+~`|}{[]\:;?><,./-=";
+
+    var password = "";
+    for (var i = 0; i < length; i++) {
+      password += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+
+    generatedPasswords.push(password);
+    localStorage.setItem("passwords", JSON.stringify(generatedPasswords));
+    displayPasswords();
+    alert("تم انشاء وتخزين كلمة المرور");
+  }
+
+  function displayPasswords() {
+    var passwordDropdown = document.getElementById("passwordDropdown");
+    passwordDropdown.innerHTML = '<option value="">كلمات المرور المُخزنة</option>';
+    generatedPasswords.forEach(function(password, index) {
+      var option = document.createElement("option");
+      option.value = index;
+      option.textContent = password;
+      option.oncontextmenu = function(e) {
+        e.preventDefault();
+        copyPassword(password);
+      };
+      passwordDropdown.appendChild(option);
+    });
+  }
+
+  function selectPassword() {
+    var selectedIndex = document.getElementById("passwordDropdown").value;
+    if (selectedIndex !== "") {
+      var selectedPassword = generatedPasswords[selectedIndex];
+      document.getElementById("passwordLabel").textContent = selectedPassword;
+    }
+  }
+
+  function copyPassword(password) {
+    var textarea = document.createElement("textarea");
+    textarea.value = password;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+    alert("Password has been copied to clipboard.");
+  }
+
+  function displayPasswordsOnLoad() {
+    var storedPasswords = JSON.parse(localStorage.getItem("passwords"));
+    if (storedPasswords) {
+      generatedPasswords = storedPasswords;
+      displayPasswords();
+    }
+  }
+
+  function changeLanguage() {
+    var selectedLanguage = document.getElementById("languageSelect").value;
+    var url = window.location.href.split('?')[0];
+    window.location.href = url + "?lang=" + selectedLanguage;
+  }
+
+  // Check if language parameter is present in the URL
+  var urlParams = new URLSearchParams(window.location.search);
+  var lang = urlParams.get('lang');
+  if (lang === 'ar') {
+    document.getElementById("languageSelect").value = 'ar';
+    document.getElementById("title").textContent = "مولد كلمة المرور";
+    document.getElementById("lengthLabel").textContent = "طول كلمة المرور:";
+    document.getElementById("uppercaseLabel").textContent = "أحرف كبيرة";
+    document.getElementById("lowercaseLabel").textContent = "حروف صغيرة";
+    document.getElementById("numbersLabel").textContent = "أرقام";
+    document.getElementById("symbolsLabel").textContent = "رموز";
+    document.getElementById("generateBtn").textContent = "انشاء كلمة المرور";
+    document.getElementById("passwordLabel").textContent = "كلمة المرور:";
+  } else if (lang === 'tr') {
+    document.getElementById("languageSelect").value = 'tr';
+    document.getElementById("title").textContent = "Şifre Oluşturucu";
+    document.getElementById("lengthLabel").textContent = "Şifre Uzunluğu:";
+    document.getElementById("uppercaseLabel").textContent = "Büyük Harf Dahil";
+    document.getElementById("lowercaseLabel").textContent = "Küçük Harf Dahil";
+    document.getElementById("numbersLabel").textContent = "Sayılar Dahil";
+    document.getElementById("symbolsLabel").textContent = "Simgeler Dahil";
+    document.getElementById("generateBtn").textContent = "Şifre Oluştur";
+    document.getElementById("passwordLabel").textContent = "Şifre:";
+  } else if (lang === 'ja') {
+    document.getElementById("languageSelect").value = 'ja';
+    document.getElementById("title").textContent = "パスワードジェネレーター";
+    document.getElementById("lengthLabel").textContent = "パスワードの長さ:";
+    document.getElementById("uppercaseLabel").textContent = "大文字を含める";
+    document.getElementById("lowercaseLabel").textContent = "小文字を含める";
+    document.getElementById("numbersLabel").textContent = "数字を含める";
+    document.getElementById("symbolsLabel").textContent = "記号を含める";
+    document.getElementById("generateBtn").textContent = "パスワードを生成する";
+    document.getElementById("passwordLabel").textContent = "パスワード:";
+  }
+</script>
+</body>
+</html>
